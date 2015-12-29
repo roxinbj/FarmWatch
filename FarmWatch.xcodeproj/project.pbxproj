@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		186350A51C21B2B200BB00D9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186350A41C21B2B200BB00D9 /* main.cpp */; };
+		186350B11C21B72700BB00D9 /* FWMoAn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186350AF1C21B72700BB00D9 /* FWMoAn.cpp */; };
+		186350B51C22116B00BB00D9 /* FWImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186350B31C22116B00BB00D9 /* FWImage.cpp */; };
+		186350B91C2211B300BB00D9 /* FWAoi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 186350B71C2211B300BB00D9 /* FWAoi.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,12 @@
 /* Begin PBXFileReference section */
 		186350A11C21B2B200BB00D9 /* FarmWatch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FarmWatch; sourceTree = BUILT_PRODUCTS_DIR; };
 		186350A41C21B2B200BB00D9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		186350AF1C21B72700BB00D9 /* FWMoAn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FWMoAn.cpp; path = MovementAnalysis/FWMoAn.cpp; sourceTree = "<group>"; };
+		186350B01C21B72700BB00D9 /* FWMoAn.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = FWMoAn.hpp; path = MovementAnalysis/FWMoAn.hpp; sourceTree = "<group>"; };
+		186350B31C22116B00BB00D9 /* FWImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FWImage.cpp; path = Elementary/FWImage.cpp; sourceTree = "<group>"; };
+		186350B41C22116B00BB00D9 /* FWImage.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = FWImage.hpp; path = Elementary/FWImage.hpp; sourceTree = "<group>"; };
+		186350B71C2211B300BB00D9 /* FWAoi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FWAoi.cpp; path = Elementary/FWAoi.cpp; sourceTree = "<group>"; };
+		186350B81C2211B300BB00D9 /* FWAoi.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = FWAoi.hpp; path = Elementary/FWAoi.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,8 +50,10 @@
 		186350981C21B2B200BB00D9 = {
 			isa = PBXGroup;
 			children = (
+				186350B21C2210F900BB00D9 /* MovementAnalysis */,
 				186350A31C21B2B200BB00D9 /* FarmWatch */,
 				186350A21C21B2B200BB00D9 /* Products */,
+				186350B61C22118400BB00D9 /* Elementary */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +71,26 @@
 				186350A41C21B2B200BB00D9 /* main.cpp */,
 			);
 			path = FarmWatch;
+			sourceTree = "<group>";
+		};
+		186350B21C2210F900BB00D9 /* MovementAnalysis */ = {
+			isa = PBXGroup;
+			children = (
+				186350AF1C21B72700BB00D9 /* FWMoAn.cpp */,
+				186350B01C21B72700BB00D9 /* FWMoAn.hpp */,
+			);
+			name = MovementAnalysis;
+			sourceTree = "<group>";
+		};
+		186350B61C22118400BB00D9 /* Elementary */ = {
+			isa = PBXGroup;
+			children = (
+				186350B31C22116B00BB00D9 /* FWImage.cpp */,
+				186350B41C22116B00BB00D9 /* FWImage.hpp */,
+				186350B71C2211B300BB00D9 /* FWAoi.cpp */,
+				186350B81C2211B300BB00D9 /* FWAoi.hpp */,
+			);
+			name = Elementary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,7 +149,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				186350B11C21B72700BB00D9 /* FWMoAn.cpp in Sources */,
+				186350B91C2211B300BB00D9 /* FWAoi.cpp in Sources */,
 				186350A51C21B2B200BB00D9 /* main.cpp in Sources */,
+				186350B51C22116B00BB00D9 /* FWImage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +241,12 @@
 		186350A91C21B2B200BB00D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/include/opencv/,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -214,6 +254,12 @@
 		186350AA1C21B2B200BB00D9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/include/opencv/,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -237,6 +283,7 @@
 				186350AA1C21B2B200BB00D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
