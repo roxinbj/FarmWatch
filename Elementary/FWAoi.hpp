@@ -14,12 +14,16 @@
 #include <string>
 #include "FWImage.hpp"
 
+// to-do include point.h
+
 class FWAoi :public FWImage{
 public:
     
 private:
-    std::string               picname;                // Number of picture, containing this FWAoi
-    int                       set_number;             // number of set, to which the picture belongs
+    std::string               iPicname;                  // Number of picture, containing this FWAoi
+    int                       iSet_number;               // number of set, to which the picture belongs
+    Point                     iTL;                       // Top Left coordinate to original image
+    Point                     iBR;
     
 };
 
