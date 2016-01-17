@@ -21,7 +21,7 @@ typedef std::vector<FWImage*>::iterator vec_image_it;
 class FWMoAn{
     
 public:
-    FWMoAn(int);                                            // Int referes to the set number
+    FWMoAn(int, int);                                       // Int referes to the set number, second int is the max number of pics to walk through
     ~FWMoAn();
     static float            iMin_Area;                      // Minimum required area for be called a movement
     
@@ -31,17 +31,17 @@ public:
     void                    show_pic(int);                  // Display Image number x
     void                    show_pic(int,int);              // Display all Images from x to y
     int                     get_num_pics();
+    int                     iNmax;                           // iterate untill picture nmax
     
 private:
-    std::list<std::string>  iPicname_list;                  // List of all names of pictures of certain set
-    int                     iNum_pics;                      // number of pics in set
+    std::list<std::string>  iPicname_list;                  // List of all names of pictures of certain set   eg.(MFDC....JPG)
     vec_image               iImage_vec;                     // List, containing pointers to all images in set
     FWImage*                iRef_Image;                     // Reference (Background image)
-    //    l_image                 iImage_list;                    // List, containing pointers to images
-    //    l_image                 iDog_list;                      // List, containing dog of image_list (dimension n-1)
-
+    int                     iNum_pics;                      // total number of pics in set
     
-    void                    load_set(int);                // Fill lists with images from files (only used in constructor)
+    void                    load_directory(int);                // Fill lists with images from files (only used in constructor)
     void                    calc_dog(int, int);             // Calculates Difference of gradient of two images
+    void                    calc_contures(int);             // Filles the contur vector of int pic
+    void                    create_aoi(int);                // Create AOI of all bounding boxes in pic i
     
 };

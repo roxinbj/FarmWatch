@@ -13,60 +13,135 @@
 
 
 
-FWImage::FWImage(int set,int num,std::string str)
+FWImage::FWImage(int set,int num,std::string name, bool load_pic)
 {
     this->iSet      = set;
-    this->iRefnum   = num;
-    this->iName     = str;
-    run_im_prep();
+    this->iNum      = num;
+    this->iName     = name;
+    if(load_pic) run_im_prep();
 }
+
+FWImage::~FWImage()
+{
+    iAoi_vec.clear();
+}
+
+
+
 
 void FWImage::run_im_prep()
 {
-    std::stringstream load,temp;
-    load   << "../../bin/Data/Set" << iSet << "/" << iName;
-    temp << "../../bin/Temp/" << iName;
-    this->iGray = imread(load.str(),CV_LOAD_IMAGE_GRAYSCALE);
-//    Sobel(this->iGray, this->iGrad, 100, 0, 1);
-    imwrite(temp.str(), this->iGray);
-//    if (is_day_pic())
-//    {
-//        this->calc_gray();                          // Converts to gray image
-//    }   ////To-do
-    ///Fill with list of all nessesary filters
+    std::stringstream load;
+    load   << "../../bin/Data/Set" << iSet << "/" << get_iName();
+    this->iGray = imread(load.str(),CV_LOAD_IMAGE_GRAYSCALE);                           // load Image from file
+    
+    //Prepare Gradient of image
+    GaussianBlur( this->iGray, this->iGray, Size(3,3), 0, 0, BORDER_DEFAULT );          //Apply Gauß filter
+    this->createGrad(1,0);
+       
+//    write(1);
+    
 }
 
 bool FWImage::is_day_pic()
 {
     bool answer = true;
-    ////////To-do
-    // Run test, whether pic is made with or without flash
-    
+        
     return answer;
 }
 
-//
-//void FWImage::apply_gauß(int sigma){
-//    
-//    
-//}
-//
-//
-//void FWImage::sobel(){
-//}
-//
-//void FWImage::thresh(float thresh){
-//}
-//
-void FWImage::calc_gray(){
+void FWImage::add_aoi(FWAoi* aoi)
+{
+    this->iAoi_vec.push_back(aoi);
+}
+
+void FWImage::delete_aoi(FWAoi* aoi)
+{
+    delete aoi;
+}
+
+int FWImage::get_iAoi_vec_size()
+{
+    return this->iAoi_vec.size();
+}
+
+FWAoi* FWImage::get_aoi(int i)
+{
+    return this->iAoi_vec.at(i);
+}
+
+int FWImage::get_rows()
+{
+    return this->iGray.rows;
+}
+
+int FWImage::get_cols()
+{
+    return this->iGray.cols;
+}
+
+std::string FWImage::get_iName()
+{
+    return this->iName;
+}
+
+int FWImage::get_iNum()
+{
+    return this->iNum;
+}
+
+int FWImage::get_iSet()
+{
+    return this->iSet;
+}
+
+void FWImage::write(int i)
+{
+    std::stringstream ss;
+    ss << "../../bin/Temp/" << get_iName()<<".png";
+    switch (i)
+    {
+        case 1:
+            imwrite(ss.str(), this->iGray);
+            break;
+        case 2:
+            imwrite(ss.str(), this->iGrad);
+            break;
+        case 3:
+            imwrite(ss.str(), this->iDog);
+            break;
+        case 4:
+            imwrite(ss.str(), this->iTemp);
+            break;
+            
+        default:
+            break;
+    }
+}
+
+void FWImage::calc_gray()
+{
     cvtColor(this->iBgr, this->iGray,CV_BGR2GRAY);          // Convert BGR Pic to gray pic
 }
-////
-////void FWImage::crop_image(Point TL, Point BR){
-////    
-////    
-////}
-////
-////int FWImage::ccl(){
-////}
 
+void FWImage::createGrad(int scale,int delta)
+{
+    /// Generate grad_x and grad_y
+    Mat grad_x, grad_y;
+    Mat abs_grad_x, abs_grad_y;
+    int ddepth = CV_16S;
+    
+    /// Gradient X
+    //Scharr( src_gray, grad_x, ddepth, 1, 0, scale, delta, BORDER_DEFAULT );
+    Sobel( this->iGray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT );
+    convertScaleAbs( grad_x, abs_grad_x );
+    
+    /// Gradient Y
+    //Scharr( src_gray, grad_y, ddepth, 0, 1, scale, delta, BORDER_DEFAULT );
+    Sobel( this->iGray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT );
+    convertScaleAbs( grad_y, abs_grad_y );
+    
+    /// Total Gradient (approximate)
+    addWeighted( abs_grad_x, 0.5, abs_grad_y, 0.5, 0, this->iGrad );
+    
+}
