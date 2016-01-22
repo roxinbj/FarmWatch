@@ -11,7 +11,7 @@
 #include <iostream>
 //#include <Point>
 
-
+//-------------------Constructors------------------------------
 
 FWImage::FWImage(int set,int num,std::string name, bool load_pic)
 {
@@ -27,42 +27,15 @@ FWImage::~FWImage()
 }
 
 
-
-
-void FWImage::run_im_prep()
-{
-    std::stringstream load;
-    load   << "../../bin/Data/Set" << iSet << "/" << get_iName();
-    this->iGray = imread(load.str(),CV_LOAD_IMAGE_GRAYSCALE);                           // load Image from file
-    
-    //Prepare Gradient of image
-    GaussianBlur( this->iGray, this->iGray, Size(3,3), 0, 0, BORDER_DEFAULT );          //Apply Gauß filter
-    this->createGrad(1,0);
-       
-//    write(1);
-    
-}
-
-bool FWImage::is_day_pic()
-{
-    bool answer = true;
-        
-    return answer;
-}
-
-void FWImage::add_aoi(FWAoi* aoi)
-{
-    this->iAoi_vec.push_back(aoi);
-}
-
-void FWImage::delete_aoi(FWAoi* aoi)
-{
-    delete aoi;
-}
+//------------------get Functions-------------------------------
 
 int FWImage::get_iAoi_vec_size()
 {
-    return this->iAoi_vec.size();
+    if (!this->iAoi_vec.empty())
+    {
+        return this->iAoi_vec.size();
+    }
+    else return 0;
 }
 
 FWAoi* FWImage::get_aoi(int i)
@@ -95,28 +68,21 @@ int FWImage::get_iSet()
     return this->iSet;
 }
 
-void FWImage::write(int i)
+
+// -------------------other functions -------------------------
+
+void FWImage::run_im_prep()
 {
-    std::stringstream ss;
-    ss << "../../bin/Temp/" << get_iName()<<".png";
-    switch (i)
-    {
-        case 1:
-            imwrite(ss.str(), this->iGray);
-            break;
-        case 2:
-            imwrite(ss.str(), this->iGrad);
-            break;
-        case 3:
-            imwrite(ss.str(), this->iDog);
-            break;
-        case 4:
-            imwrite(ss.str(), this->iTemp);
-            break;
-            
-        default:
-            break;
-    }
+    std::stringstream load;
+    load   << "../../bin/Data/Set" << iSet << "/" << get_iName();
+    this->iGray = imread(load.str(),CV_LOAD_IMAGE_GRAYSCALE);                           // load Image from file
+    
+    //Prepare Gradient of image
+    GaussianBlur( this->iGray, this->iGray, Size(3,3), 0, 0, BORDER_DEFAULT );          //Apply Gauß filter
+    this->createGrad(1,0);
+       
+//    write(1);
+    
 }
 
 void FWImage::calc_gray()
@@ -144,4 +110,46 @@ void FWImage::createGrad(int scale,int delta)
     /// Total Gradient (approximate)
     addWeighted( abs_grad_x, 0.5, abs_grad_y, 0.5, 0, this->iGrad );
     
+}
+
+void FWImage::add_aoi(FWAoi* aoi)
+{
+    this->iAoi_vec.push_back(aoi);
+}
+
+void FWImage::delete_aoi(FWAoi* aoi)
+{
+    delete aoi;
+}
+
+void FWImage::write(int i)
+{
+    std::stringstream ss;
+    ss << "../../bin/Temp/" << get_iName()<<".png";
+    switch (i)
+    {
+        case 1:
+            imwrite(ss.str(), this->iGray);
+            break;
+        case 2:
+            imwrite(ss.str(), this->iGrad);
+            break;
+        case 3:
+            imwrite(ss.str(), this->iDog);
+            break;
+        case 4:
+            imwrite(ss.str(), this->iTemp);
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
+bool FWImage::is_day_pic()
+{
+    bool answer = true;
+    
+    return answer;
 }

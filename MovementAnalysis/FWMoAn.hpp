@@ -32,6 +32,9 @@ public:
     void                    show_pic(int,int);              // Display all Images from x to y
     int                     get_num_pics();
     int                     iNmax;                           // iterate untill picture nmax
+//    int                     iFWAoi_match(FWAoi*);           // input: Aoi output: number, where correspondent Aoi is in previous pic
+    bool                    iAoi_exist_prev(FWAoi*);              // Tests whether the same Aoi already exists in previous image
+    FWAoi*                  iAoi_intersects(FWImage*, FWAoi*);
     
 private:
     std::list<std::string>  iPicname_list;                  // List of all names of pictures of certain set   eg.(MFDC....JPG)

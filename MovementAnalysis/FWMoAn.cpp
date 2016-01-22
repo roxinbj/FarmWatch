@@ -7,10 +7,12 @@
 #include <stdio.h>
 #include <sstream>
 
-
+typedef double tNumber;
 typedef std::list<std::string>  ls;
 
 //  ************* public ***********
+
+//-------------------Constructors------------------------------
 
 FWMoAn::FWMoAn(int set_n, int nmax)
 {
@@ -80,11 +82,17 @@ FWMoAn::~FWMoAn()
     iImage_vec.clear();
 }
 
+//------------------get Functions-------------------------------
+
+
+int FWMoAn::get_num_pics()
+{
+    return iNum_pics;
+}
 
 void FWMoAn::run_MoAn()
 {
     iRef_Image = iImage_vec.at(0);                                          //Set first Image to background image
-    int ref_number = 0;                                                     // Number referes to the x element in iImage_vec
     for(int i=1;i<iNmax-1;i++)
     {
         calc_dog(i-1,i);
@@ -104,20 +112,92 @@ void FWMoAn::print_picname_list()
     }
 }
 
-int FWMoAn::get_num_pics()
+//int FWMoAn::iFWAoi_match(FWAoi* aoi)
+//{
+////    int image_num = aoi->get_iNum();
+////    FWImage* prev = iImage_vec.at(image_num-1);
+////    int aoi_vec_size = prev->get_iAoi_vec_size();
+//    return 0;
+//}
+
+bool FWMoAn::iAoi_exist_prev(FWAoi* aoi)
 {
-    return iNum_pics;
+    int image_num = aoi->get_iNum();
+    FWImage* prev = iImage_vec.at(image_num-1);
+    int aoi_vec_size = prev->get_iAoi_vec_size();
+    tNumber center_dist[aoi_vec_size];                                              // create array, containing all error sums of aoi's
+    if (aoi_vec_size!=0)
+    {
+        // Get closest Aoi
+        FWAoi* aoi_close = prev->get_aoi(0);
+        tNumber min_dist = 100000000;
+        int aoi_num=0;
+        for(int k=0;k<aoi_vec_size;k++)                                                 // iterate through aoi's in prev
+        {
+            FWAoi* aoi_b = prev->get_aoi(k);                                            // aoi_b is new tested aoi
+            Point d_center = Point(aoi->get_iCenter())-Point(aoi_b->get_iCenter());
+            center_dist[k] = std::sqrt(d_center.x*d_center.x+d_center.y*d_center.y);
+            if(center_dist[k] < min_dist)
+            {
+                min_dist=center_dist[k];                                                // overwrite min_dist
+                aoi_close = aoi_b;                                                      // set aoi_close to current aoi_b
+                aoi_num = k;
+            }
+        }
+//        std::cout<<"min_dst: "<< min_dist<<std::endl;
+        if(min_dist < 20)
+        {
+//            std::cout << "AP:"<< "n:"<< aoi->get_iNum_in_Aoivec() << "and p:"<< aoi_close->get_iNum_in_Aoivec()<< std::endl;
+            return true;
+        }
+        else return false;
+    }
+    else return false;
 }
 
+FWAoi* FWMoAn::iAoi_intersects(FWImage* image_in, FWAoi* aoi)
+{
+    FWImage* image = image_in;
+    int max_aoi = image->get_iAoi_vec_size();
+    Rect rect1 = aoi->get_iRect();
+    Rect newrect;
+    bool intersection = false;                              // will be turned true if intersection found
+    for(int i=0; i<max_aoi;i++)           // Iterate through Aoi Vector
+    {
+        FWAoi* aoi_test = image->get_aoi(i);
+        Rect rect_i =  aoi_test->get_iRect();
+        
+        if((rect1 & rect_i)==rect1 || (rect1 & rect_i)==rect_i)                         // rect1 is completely in rect_i
+        {
+            if(rect1.area()>rect_i.area())
+                newrect = rect1;
+            
+            else if (rect_i.area()>rect1.area())
+                newrect = rect_i;
+            else
+                std::cout <<"error in rect comparison"<<endl;
+            
+            intersection = true;
 
+        }
+        else if((rect1 & rect_i).area() > 0)                // rects intersect
+        {
+            newrect = rect1 | rect_i;
+            intersection = true;
+        }
+    }
+    if(intersection)
+    {
+        // create new AOI for newrect
+        FWAoi* new_aoi = new FWAoi(image,newrect);
+        return new_aoi;
+    }
+    else return aoi;
+}
 
 // ************* private ************
 
 
-void FWMoAn::load_directory(int n)
-{
-    
-}
 
 void FWMoAn::calc_dog(int ref,int pic_num)
 {
@@ -135,7 +215,7 @@ void FWMoAn::calc_dog(int ref,int pic_num)
 //   Canny(next->iDog, next->iTemp, 50, 200, 3);
 //   imwrite("../../bin/Temp/img.png", next->iDog);
     next->iDog_ref_n = ref;
-//    next->write(3);
+    next->write(1);
 }
 
 void FWMoAn::calc_contures(int pic_num)
@@ -151,36 +231,46 @@ void FWMoAn::calc_contures(int pic_num)
     int k=0;                                                                                // k = iterator through images
     for(int i=0; i<next->iContours.size();i++)
     {
-        if( contourArea(next->iContours.at(i))>min_area)                                    // j = iterator through contours
+        if( contourArea(next->iContours.at(i))>min_area)                                    // i = iterator through contours
         {
             k++;
-            // Create Bounding Boxes and AOI
+            // Create Bounding Boxes
             vector<Point>  contours_poly;
             approxPolyDP( Mat(next->iContours[i]), contours_poly, 3, true );
             Rect  rect = boundingRect(Mat(contours_poly));
-            double asp_rat = rect.height/rect.width;
-            
-            next->iBoundingRect.push_back(rect);
-            rectangle( next->iTemp, rect.tl(), rect.br(), Scalar(255,255,255), 2, 8, 0 );
-            
-            double area =  contourArea(next->iContours.at(i));
-            std::cout << "area = " << area << std::endl;
             
             // Create AOI
             FWAoi* aoi = new FWAoi(next,rect.tl(),rect.br());
-            next->add_aoi(aoi);
-//            aoi->write(1,k);
-        }
+            if(iAoi_exist_prev(aoi))                                            // except: Aoi is Out Movement
+            {
+                next->delete_aoi(aoi);
+            }
+            else                                                            // merge if rect intersects with existing
+            {
+                FWAoi* new_aoi = iAoi_intersects(next, aoi);
+                if(new_aoi!=aoi)                                            // if new AOI is not aoi
+                {
+                    double area = aoi->get_iRect().area();
+                    next->delete_aoi(aoi);                                  // delete old aoi
+                    Rect new_rect = new_aoi->get_iRect();
+                    next->iBoundingRect.push_back(new_rect);
+                    rectangle( next->iTemp, new_rect.tl(), new_rect.br(), Scalar(255,255,255), 2, 8, 0 );
+                    next->add_aoi(new_aoi);                                 // Add new aoi
+//                    std::cout << "---new AOI area = " << new_rect.area() << std::endl;
+//                    std::cout << "old area: "<< area <<std::endl;
+//                  new_aoi->write(1,k);
+                }
+                else
+                {
+                    next->iBoundingRect.push_back(rect);
+                    rectangle( next->iTemp, rect.tl(), rect.br(), Scalar(255,255,255), 2, 8, 0 );
+                    next->add_aoi(aoi);                                 // Add new aoi
+                }
+            }            
+        }// end of contour iterator
     }
-    if (next->iBoundingRect.size()>0)
-    {
-        
-        next->write(4);
-    }
+    if (next->iBoundingRect.size()>0) next->write(4);                        // only rewrite Image, if at least one bounding box is added
+    std::cout <<"Number of AOI:"<< next->get_iAoi_vec_size()<<std::endl;
 }
 
-void FWMoAn::create_aoi(int pic_num)
-{
-    
-    
-}
+

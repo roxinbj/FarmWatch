@@ -55,6 +55,8 @@ public:
     int                     get_iNum();                         // return iNum
     int                     get_iSet();                         // return iSet
     
+       
+    
 protected:                                                      // Also available in vererbten Klassen
     void                    run_im_prep();                      // runs nessesary filters on image (gauß, gray,)
     void                    createGrad(int,int);                // Create Gradient (scale =1, delta=0)
