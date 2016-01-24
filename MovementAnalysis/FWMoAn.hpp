@@ -28,8 +28,6 @@ public:
     void                    run_MoAn();
   
     void                    print_picname_list();
-    void                    show_pic(int);                  // Display Image number x
-    void                    show_pic(int,int);              // Display all Images from x to y
     int                     get_num_pics();
     int                     iNmax;                           // iterate untill picture nmax
 //    int                     iFWAoi_match(FWAoi*);           // input: Aoi output: number, where correspondent Aoi is in previous pic
@@ -46,5 +44,7 @@ private:
     void                    calc_dog(int, int);             // Calculates Difference of gradient of two images
     void                    calc_contures(int);             // Filles the contur vector of int pic
     void                    create_aoi(int);                // Create AOI of all bounding boxes in pic i
+    
+    
     
 };

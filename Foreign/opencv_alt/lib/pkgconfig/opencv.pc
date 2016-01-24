@@ -1,0 +1,14 @@
+# Package Information for pkg-config
+
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir_old=${prefix}/include/opencv
+includedir_new=${prefix}/include
+
+Name: OpenCV
+Description: Open Source Computer Vision Library
+Version: 3.0.0
+Libs: -L${exec_prefix}/lib -lopencv_imgcodecs -lopencv_photo -lopencv_stitching -lopencv_calib3d -lopencv_features2d -lopencv_objdetect -lopencv_ml -lopencv_imgproc -lopencv_flann -lopencv_core -lopencv_hal
+Libs.private: -l-framework OpenCL
+Cflags: -I${includedir_old} -I${includedir_new}

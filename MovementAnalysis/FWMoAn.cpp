@@ -10,7 +10,11 @@
 typedef double tNumber;
 typedef std::list<std::string>  ls;
 
+// Global Variables in FWMoAn
+
 //  ************* public ***********
+
+
 
 //-------------------Constructors------------------------------
 
@@ -92,6 +96,14 @@ int FWMoAn::get_num_pics()
 
 void FWMoAn::run_MoAn()
 {
+    //1. Fill iImage Vector with all images --> done in constructor
+    //2. Select image Pair and find movements in second image
+    //2.1 Fil rects[array] : Calc DOG of two images, analyse DOG for contures and create rect array of possible movements,
+    //2.1.1 merge intersecting rects --> update rect array
+    //2.2 test rect[i] : correlation rects in two images, possibly another test
+    
+    
+    
     iRef_Image = iImage_vec.at(0);                                          //Set first Image to background image
     for(int i=1;i<iNmax-1;i++)
     {
