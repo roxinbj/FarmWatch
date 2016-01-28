@@ -54,7 +54,7 @@ public:
     std::string             get_iName();                        // return iName
     int                     get_iNum();                         // return iNum
     int                     get_iSet();                         // return iSet
-    
+    Size                    get_size();                         // return Size
        
     
 protected:                                                      // Also available in vererbten Klassen

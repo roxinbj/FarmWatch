@@ -11,7 +11,10 @@ typedef double tNumber;
 typedef std::list<std::string>  ls;
 
 // Global Variables in FWMoAn
-
+FWImage* previous;
+FWImage* current;
+vector<Rect> potential_aois;
+Size dim(1920,1080);
 //  ************* public ***********
 
 
@@ -20,7 +23,11 @@ typedef std::list<std::string>  ls;
 
 FWMoAn::FWMoAn(int set_n, int nmax)
 {
-    this->iNmax = nmax;
+    if (nmax !=0)                   //if nmax ==0 --> load all pictures in set
+    {
+        this->iNmax = nmax;
+    }
+    else this->iNmax = 100;
     DIR *pdir = NULL;                                                   // Pointer to a directory
     struct dirent *pent = NULL;
     char str[80];
@@ -53,14 +60,22 @@ FWMoAn::FWMoAn(int set_n, int nmax)
             iPicname_list.push_back(pent->d_name);                      // Adds name of pic to iPicname_list
             //            std::stringstream ss;
             //            ss << pent->d_name ;
-            FWImage* image = new FWImage(set_n,i,pent->d_name,true);         // create new image and
             //            iImage_list.push_back(image);                 // add it to the list
-            iImage_vec.push_back(image);                                // add it to the vector
+           
             i++;
         }
     }
     closedir(pdir);
     this->iNum_pics = i;                                                // iNum_pics is been set
+    iImage_vec.reserve(iNum_pics);
+
+    
+    for(int it=0;it<iNum_pics;it++)                                     // TODO Parallel
+    {
+        FWImage* image = new FWImage(set_n,it,this->iPicname_list.at(it),true);         // create new image and
+//        iImage_vec.insert(iterator,image);
+        iImage_vec.push_back(image);                                // add it to the vector
+    }
     
     if(iNum_pics!=iPicname_list.size())
     {
@@ -102,12 +117,15 @@ void FWMoAn::run_MoAn()
     //2.1.1 merge intersecting rects --> update rect array
     //2.2 test rect[i] : correlation rects in two images, possibly another test
     
-    
+  
     
     iRef_Image = iImage_vec.at(0);                                          //Set first Image to background image
     for(int i=1;i<iNmax-1;i++)
     {
-        calc_dog(i-1,i);
+        previous    = iImage_vec.at(i-1);
+        current       = iImage_vec.at(i);
+        
+        calc_dog(i-1,i);                                                // create Dog, fills rect array with possible movements
         calc_contures(i);
         
     }
@@ -116,12 +134,18 @@ void FWMoAn::run_MoAn()
 
 void FWMoAn::print_picname_list()
 {
-    ls::iterator i = iPicname_list.begin();
-    while (i!=iPicname_list.end())
+//
+    for(int i=0;i<iPicname_list.size();i++)
     {
-        std::cout << *i <<std::endl;
-        ++i;
+        std::cout<< iPicname_list.at(i);
     }
+    
+//    ls::iterator i = iPicname_list.begin();
+//    while (i!=iPicname_list.end())
+//    {
+//        std::cout << *i <<std::endl;
+//        ++i;
+//    }
 }
 
 //int FWMoAn::iFWAoi_match(FWAoi* aoi)
@@ -135,6 +159,7 @@ void FWMoAn::print_picname_list()
 bool FWMoAn::iAoi_exist_prev(FWAoi* aoi)
 {
     int image_num = aoi->get_iNum();
+    
     FWImage* prev = iImage_vec.at(image_num-1);
     int aoi_vec_size = prev->get_iAoi_vec_size();
     tNumber center_dist[aoi_vec_size];                                              // create array, containing all error sums of aoi's
@@ -213,76 +238,216 @@ FWAoi* FWMoAn::iAoi_intersects(FWImage* image_in, FWAoi* aoi)
 
 void FWMoAn::calc_dog(int ref,int pic_num)
 {
-    FWImage* next = iImage_vec.at(pic_num);                             // Image to be subtracted from refImage
-    FWImage* ref_im  = iImage_vec.at(ref);
-    absdiff(ref_im->iGray,next->iGray,next->iDog);
-    threshold(next->iDog, next->iDog, 70, 255, THRESH_BINARY);
-    medianBlur(next->iDog, next->iDog, 9);
+    // 1. create DOG
+    
+    absdiff(previous->iGray,current->iGray,current->iDog);
+//    current->write(3);
+    medianBlur(current->iDog, current->iDog, 9);
+//    current->write(3);
+    threshold(current->iDog, current->iDog, 70, 255, THRESH_BINARY);
+//    current->write(3);
     int dilation_size = 4;
     Mat element = getStructuringElement( 0,Size( 2*dilation_size + 1, 2*dilation_size+1 ),Point( dilation_size, dilation_size ) );
     Mat element2 = getStructuringElement( 0,Size( 4*dilation_size + 1, 4*dilation_size+1 ),Point( 2*dilation_size, 2*dilation_size ) );
-    erode(next->iDog, next->iDog, element);
-    dilate(next->iDog, next->iDog, element2);
+    erode(current->iDog, current->iDog, element);
+//    current->write(3);
+    dilate(current->iDog, current->iDog, element2);
+    current->write(3);
+//   Canny(current->iDog, current->iTemp, 50, 200, 3);
+    current->iDog_ref_n = ref;
+    int thresh = 50;
+//    Canny(current->iDog, current->iDog, thresh, thresh*2, 3);
+    current->write(3);
     
-//   Canny(next->iDog, next->iTemp, 50, 200, 3);
-//   imwrite("../../bin/Temp/img.png", next->iDog);
-    next->iDog_ref_n = ref;
-    next->write(1);
-}
-
-void FWMoAn::calc_contures(int pic_num)
-{
-    FWImage* next = iImage_vec.at(pic_num);                             // Image to be subtracted from refImage
-    next->iTemp = next->iGray;
-    double min_area = 3000;
-    findContours(next->iDog, next->iContours, next->iHierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE,Point(0, 0));
+    // 2. fill contour vector and rect array
     
+//    current->iTemp = current->iGray;
+    double min_area = 2000;
+    Size scalefactor(10,10);                                                                // enlarge found rect
+    findContours(current->iDog, current->iContours, current->iHierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE,Point(0, 0));
     std::stringstream ss;
-    ss << next->get_iName();
-    std::cout << "contours: "<<next->iContours.size()<<", nr: "<< ss.str()<< std::endl;
+    ss << current->get_iName();
+    std::cout << "contours: "<<current->iContours.size()<<", nr: "<< ss.str()<< std::endl;
     int k=0;                                                                                // k = iterator through images
-    for(int i=0; i<next->iContours.size();i++)
+    for(int i=0; i<current->iContours.size();i++)
     {
-        if( contourArea(next->iContours.at(i))>min_area)                                    // i = iterator through contours
+        if( contourArea(current->iContours.at(i))>min_area)                                    // i = iterator through contours
         {
             k++;
             // Create Bounding Boxes
             vector<Point>  contours_poly;
-            approxPolyDP( Mat(next->iContours[i]), contours_poly, 3, true );
+            approxPolyDP( Mat(current->iContours[i]), contours_poly, 3, true );
             Rect  rect = boundingRect(Mat(contours_poly));
+            drawContours( current->iTemp, vector<vector<Point> >(1,current->iContours.at(i)), 0, Scalar(255,0,255), 1, 8);
+            rectangle( current->iTemp, rect.tl(), rect.br(), Scalar(255,0,255), 1, 8, 0 );
+            current->write(4);
+            
+            bool rect_ok = true;
+            if(rect.br().x>dim.width || rect.br().y > dim.height)
+            {
+                std::cout<< "Rect too big"<<std::endl;
+                rect_ok = false;
+            }
+            auto size = potential_aois.size();
+            if (size==0 && rect_ok)
+            {
+                potential_aois.push_back(rect);       // push only first rect automatically
+            }
+            for(int j=0; j<size;j++)
+            {
+                if(rect_ok)
+                {   Rect new_rect;
+                    bool is_new;
+                    merge_rects(rect, potential_aois.at(j),new_rect,is_new);            // merges, if rects overlap and returns merged rect
+                    if(!is_new)                         // same already exists, so exchange
+                    {
+                        potential_aois.at(j) = new_rect;      // TODo : delete does not work
+                        rect = new_rect;
+//                        j++;
+                    }
+                    else
+                    {
+                    potential_aois.push_back(new_rect);         // add element
+                    }
+                }
+                // TODO
+            }
+            
             
             // Create AOI
-            FWAoi* aoi = new FWAoi(next,rect.tl(),rect.br());
-            if(iAoi_exist_prev(aoi))                                            // except: Aoi is Out Movement
-            {
-                next->delete_aoi(aoi);
-            }
-            else                                                            // merge if rect intersects with existing
-            {
-                FWAoi* new_aoi = iAoi_intersects(next, aoi);
-                if(new_aoi!=aoi)                                            // if new AOI is not aoi
-                {
-                    double area = aoi->get_iRect().area();
-                    next->delete_aoi(aoi);                                  // delete old aoi
-                    Rect new_rect = new_aoi->get_iRect();
-                    next->iBoundingRect.push_back(new_rect);
-                    rectangle( next->iTemp, new_rect.tl(), new_rect.br(), Scalar(255,255,255), 2, 8, 0 );
-                    next->add_aoi(new_aoi);                                 // Add new aoi
-//                    std::cout << "---new AOI area = " << new_rect.area() << std::endl;
-//                    std::cout << "old area: "<< area <<std::endl;
-//                  new_aoi->write(1,k);
-                }
-                else
-                {
-                    next->iBoundingRect.push_back(rect);
-                    rectangle( next->iTemp, rect.tl(), rect.br(), Scalar(255,255,255), 2, 8, 0 );
-                    next->add_aoi(aoi);                                 // Add new aoi
-                }
-            }            
-        }// end of contour iterator
+//            FWAoi* aoi = new FWAoi(current,rect.tl(),rect.br());
+//            if(iAoi_exist_prev(aoi))                                            // except: Aoi is Out Movement
+//            {
+//                current->delete_aoi(aoi);
+//            }
+//            else                                                            // merge if rect intersects with existing
+//            {
+//                FWAoi* new_aoi = iAoi_intersects(current, aoi);
+//                if(new_aoi!=aoi)                                            // if new AOI is not aoi
+//                {
+//                    double area = aoi->get_iRect().area();
+//                    current->delete_aoi(aoi);                                  // delete old aoi
+//                    Rect new_rect = new_aoi->get_iRect();
+//                    current->iBoundingRect.push_back(new_rect);
+//                    rectangle( current->iTemp, new_rect.tl(), new_rect.br(), Scalar(255,255,255), 2, 8, 0 );
+//                    current->add_aoi(new_aoi);                                 // Add new aoi
+//                    //                    std::cout << "---new AOI area = " << new_rect.area() << std::endl;
+//                    //                    std::cout << "old area: "<< area <<std::endl;
+//                    //                  new_aoi->write(1,k);
+//                }
+//                else
+//                {
+//                    current->iBoundingRect.push_back(rect);
+//                    rectangle( current->iTemp, rect.tl(), rect.br(), Scalar(255,255,255), 2, 8, 0 );
+//                    current->add_aoi(aoi);                                 // Add new aoi
+//                }
+//            }
+        }
+        
     }
-    if (next->iBoundingRect.size()>0) next->write(4);                        // only rewrite Image, if at least one bounding box is added
-    std::cout <<"Number of AOI:"<< next->get_iAoi_vec_size()<<std::endl;
+    for(int i=0;i<potential_aois.size();i++)
+    {
+        rectangle( current->iGray, potential_aois.at(i).tl(), potential_aois.at(i).br(), Scalar(255,255,10*i), 2, 8, 0 );
+        
+    }
+    potential_aois.clear();
+    current->write(1);
+//    if (current->iBoundingRect.size()>0) current->write(4);                        // only rewrite Image, if at least one bounding box is added
+//    std::cout <<"Number of AOI:"<< current->get_iAoi_vec_size()<<std::endl;
+}
+
+void FWMoAn::merge_rects(Rect& one, Rect& two, Rect& new_rect,bool& is_new)
+{
+    Point new_tl;
+    Point new_br;
+    is_new = true;
+    if(one.contains(two.tl()) || one.contains(two.br()) || one.contains(Point(two.tl().x+two.width,two.tl().y)) || one.contains(Point(two.br().x-two.width,two.br().y)))
+    {
+        is_new = false;
+        // calc new tl
+        if(one.tl().x<two.tl().x)           // one is more left
+        {
+            if(one.tl().y<two.tl().y)       new_tl = one.tl();
+            else                            new_tl = Point(one.tl().x,two.tl().y);
+        }
+        else if (one.tl().y<two.tl().y)     new_tl = Point(two.tl().x,one.tl().y);
+        else                                new_tl = two.tl();
+        
+        //calc new br
+        if(one.br().x>two.br().x)           // one is more left
+        {
+            if(one.br().y>two.br().y)       new_br = one.br();
+            else                            new_br = Point(one.br().x,two.br().y);
+        }
+        else if (one.br().y>two.br().y)     new_br = Point(two.br().x,one.br().y);
+        else                                new_br = two.br();
+    }
+    else
+    {
+        is_new = true;
+        new_tl = one.tl();
+        new_br = one.br();
+    }
+    Rect rect(new_tl,new_br);
+    new_rect = rect;
+    
+}
+
+void FWMoAn::calc_contures(int pic_num)
+{
+    
+    // Not needed anymore
+//    FWImage* next = iImage_vec.at(pic_num);                             // Image to be subtracted from refImage
+//    current->iTemp = current->iGray;
+//    double min_area = 3000;
+//    findContours(current->iDog, current->iContours, current->iHierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE,Point(0, 0));
+//    
+//    std::stringstream ss;
+//    ss << current->get_iName();
+//    std::cout << "contours: "<<current->iContours.size()<<", nr: "<< ss.str()<< std::endl;
+//    int k=0;                                                                                // k = iterator through images
+//    for(int i=0; i<current->iContours.size();i++)
+//    {
+//        if( contourArea(current->iContours.at(i))>min_area)                                    // i = iterator through contours
+//        {
+//            k++;
+//            // Create Bounding Boxes
+//            vector<Point>  contours_poly;
+//            approxPolyDP( Mat(current->iContours[i]), contours_poly, 3, true );
+//            Rect  rect = boundingRect(Mat(contours_poly));
+//            
+//            // Create AOI
+//            FWAoi* aoi = new FWAoi(current,rect.tl(),rect.br());
+//            if(iAoi_exist_prev(aoi))                                            // except: Aoi is Out Movement
+//            {
+//                current->delete_aoi(aoi);
+//            }
+//            else                                                            // merge if rect intersects with existing
+//            {
+//                FWAoi* new_aoi = iAoi_intersects(current, aoi);
+//                if(new_aoi!=aoi)                                            // if new AOI is not aoi
+//                {
+//                    double area = aoi->get_iRect().area();
+//                    current->delete_aoi(aoi);                                  // delete old aoi
+//                    Rect new_rect = new_aoi->get_iRect();
+//                    current->iBoundingRect.push_back(new_rect);
+//                    rectangle( current->iTemp, new_rect.tl(), new_rect.br(), Scalar(255,255,255), 2, 8, 0 );
+//                    current->add_aoi(new_aoi);                                 // Add new aoi
+////                    std::cout << "---new AOI area = " << new_rect.area() << std::endl;
+////                    std::cout << "old area: "<< area <<std::endl;
+////                  new_aoi->write(1,k);
+//                }
+//                else
+//                {
+//                    current->iBoundingRect.push_back(rect);
+//                    rectangle( current->iTemp, rect.tl(), rect.br(), Scalar(255,255,255), 2, 8, 0 );
+//                    current->add_aoi(aoi);                                 // Add new aoi
+//                }
+//            }            
+//        }// end of contour iterator
+//    }
+//    if (current->iBoundingRect.size()>0) current->write(4);                        // only rewrite Image, if at least one bounding box is added
+//    std::cout <<"Number of AOI:"<< current->get_iAoi_vec_size()<<std::endl;
 }
 
 

@@ -17,6 +17,8 @@ typedef std::list<FWImage*>::iterator l_image_it;
 typedef std::vector<FWImage*> vec_image;
 typedef std::vector<FWImage*>::iterator vec_image_it;
 
+typedef std::vector<std::string> vec_string;
+
 
 class FWMoAn{
     
@@ -35,7 +37,8 @@ public:
     FWAoi*                  iAoi_intersects(FWImage*, FWAoi*);
     
 private:
-    std::list<std::string>  iPicname_list;                  // List of all names of pictures of certain set   eg.(MFDC....JPG)
+    vec_string              iPicname_list;
+//    std::list<std::string>  iPicname_list;                  // List of all names of pictures of certain set   eg.(MFDC....JPG)
     vec_image               iImage_vec;                     // List, containing pointers to all images in set
     FWImage*                iRef_Image;                     // Reference (Background image)
     int                     iNum_pics;                      // total number of pics in set
@@ -44,7 +47,7 @@ private:
     void                    calc_dog(int, int);             // Calculates Difference of gradient of two images
     void                    calc_contures(int);             // Filles the contur vector of int pic
     void                    create_aoi(int);                // Create AOI of all bounding boxes in pic i
-    
+    void                    merge_rects(Rect&,Rect&,Rect&,bool&);
     
     
 };

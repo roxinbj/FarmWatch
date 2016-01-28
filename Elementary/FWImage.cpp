@@ -68,6 +68,12 @@ int FWImage::get_iSet()
     return this->iSet;
 }
 
+Size FWImage::get_size()
+{
+    Size size(this->iGray.cols,this->iGray.rows);
+   return size;
+}
+
 
 // -------------------other functions -------------------------
 
@@ -76,7 +82,8 @@ void FWImage::run_im_prep()
     std::stringstream load;
     load   << "../../bin/Data/Set" << iSet << "/" << get_iName();
     this->iGray = imread(load.str(),CV_LOAD_IMAGE_GRAYSCALE);                           // load Image from file
-    
+    Size size = this->get_size();
+    this->iTemp = Mat::zeros(size, CV_64F); 
     //Prepare Gradient of image
     GaussianBlur( this->iGray, this->iGray, Size(3,3), 0, 0, BORDER_DEFAULT );          //Apply Gauß filter
     this->createGrad(1,0);
@@ -125,19 +132,23 @@ void FWImage::delete_aoi(FWAoi* aoi)
 void FWImage::write(int i)
 {
     std::stringstream ss;
-    ss << "../../bin/Temp/" << get_iName()<<".png";
+    ss << "../../bin/Temp/" << get_iName();
     switch (i)
     {
         case 1:
+            ss << "-3GRAY.png";
             imwrite(ss.str(), this->iGray);
             break;
         case 2:
+            ss << "GRAD.png";
             imwrite(ss.str(), this->iGrad);
             break;
         case 3:
+            ss << "-1DOG.png";
             imwrite(ss.str(), this->iDog);
             break;
         case 4:
+            ss << "-2TEMP.png";
             imwrite(ss.str(), this->iTemp);
             break;
             
