@@ -154,12 +154,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "368"
-            endingLineNumber = "368"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            startingLineNumber = "395"
+            endingLineNumber = "395"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -186,12 +186,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
-            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -202,12 +202,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "373"
-            endingLineNumber = "373"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            startingLineNumber = "404"
+            endingLineNumber = "404"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -218,12 +218,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "377"
-            endingLineNumber = "377"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            startingLineNumber = "401"
+            endingLineNumber = "401"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -234,12 +234,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            startingLineNumber = "397"
+            endingLineNumber = "397"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -250,12 +250,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "370"
-            endingLineNumber = "370"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            startingLineNumber = "398"
+            endingLineNumber = "398"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -266,12 +266,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "371"
-            endingLineNumber = "371"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            startingLineNumber = "406"
+            endingLineNumber = "406"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -282,12 +282,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            startingLineNumber = "418"
+            endingLineNumber = "418"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -298,12 +298,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "391"
             endingLineNumber = "391"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -314,12 +314,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
-            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
+            startingLineNumber = "389"
+            endingLineNumber = "389"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -330,108 +330,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "364"
-            endingLineNumber = "364"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "362"
-            endingLineNumber = "362"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
-            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
-            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "303"
-            endingLineNumber = "303"
-            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "304"
-            endingLineNumber = "304"
-            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "367"
-            endingLineNumber = "367"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            startingLineNumber = "394"
+            endingLineNumber = "394"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -586,12 +490,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "294"
-            endingLineNumber = "294"
-            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
+            startingLineNumber = "414"
+            endingLineNumber = "414"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -602,44 +506,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
+            timestampString = "475675682.896383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "310"
-            endingLineNumber = "310"
-            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MovementAnalysis/FWMoAn.cpp"
-            timestampString = "475626465.035783"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "386"
-            endingLineNumber = "386"
-            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; is_new)"
+            startingLineNumber = "413"
+            endingLineNumber = "413"
+            landmarkName = "FWMoAn::merge_rects(Rect&amp; one, Rect&amp; two, Rect&amp; new_rect,bool&amp; replace_rect)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -672,6 +544,118 @@
             startingLineNumber = "89"
             endingLineNumber = "89"
             landmarkName = "FWImage::run_im_prep()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovementAnalysis/FWMoAn.cpp"
+            timestampString = "475674090.164004"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
+            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovementAnalysis/FWMoAn.cpp"
+            timestampString = "475674204.896686"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "276"
+            endingLineNumber = "276"
+            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovementAnalysis/FWMoAn.cpp"
+            timestampString = "475674843.530852"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
+            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovementAnalysis/FWMoAn.cpp"
+            timestampString = "475674833.641532"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
+            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovementAnalysis/FWMoAn.cpp"
+            timestampString = "475675458.210643"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "306"
+            endingLineNumber = "306"
+            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovementAnalysis/FWMoAn.cpp"
+            timestampString = "475675682.896383"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
+            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MovementAnalysis/FWMoAn.cpp"
+            timestampString = "475675464.977149"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
+            landmarkName = "FWMoAn::calc_dog(int ref,int pic_num)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -293,25 +293,50 @@ void FWMoAn::calc_dog(int ref,int pic_num)
             {
                 potential_aois.push_back(rect);       // push only first rect automatically
             }
-            for(int j=0; j<size;j++)
+//            size = potential_aois.size();
+            
+            if(size!=0 && rect_ok)
             {
-                if(rect_ok)
-                {   Rect new_rect;
-                    bool is_new;
-                    merge_rects(rect, potential_aois.at(j),new_rect,is_new);            // merges, if rects overlap and returns merged rect
-                    if(!is_new)                         // same already exists, so exchange
+                vector<Rect>::iterator iterator=potential_aois.begin();
+                bool replace_rect = false;
+                while(iterator!=potential_aois.end() && !replace_rect)
+                {
+                    Rect new_rect;
+                    merge_rects(rect, *iterator, new_rect,replace_rect);
+                    if(replace_rect)                                // found similar rect: replace it and restart while loop
                     {
-                        potential_aois.at(j) = new_rect;      // TODo : delete does not work
-                        rect = new_rect;
-//                        j++;
+                        potential_aois.erase(iterator);
+                        potential_aois.insert(iterator,new_rect);
+                        // possible recursive loop?????
                     }
-                    else
-                    {
-                    potential_aois.push_back(new_rect);         // add element
-                    }
+                    iterator++;
                 }
-                // TODO
+                if(!replace_rect)               // if after iterating through potential_aois no rect is similar
+                {
+                    potential_aois.push_back(rect);
+                }
             }
+            
+            
+//            for(int j=0; j<size;j++)
+//            {
+//                if(rect_ok)
+//                {   Rect new_rect;
+//                    bool replace_rect;
+//                    merge_rects(rect, potential_aois.at(j),new_rect,replace_rect);            // merges, if rects overlap and returns merged rect
+//                    if(!replace_rect)                         // same already exists, so exchange
+//                    {
+//                        potential_aois.at(j) = new_rect;      // TODo : delete does not work
+//                        rect = new_rect;
+////                        j++;
+//                    }
+//                    else
+//                    {
+//                    potential_aois.push_back(rect);         // add element
+//                    }
+//                }
+//                // TODO
+//            }
             
             
             // Create AOI
@@ -356,14 +381,14 @@ void FWMoAn::calc_dog(int ref,int pic_num)
 //    std::cout <<"Number of AOI:"<< current->get_iAoi_vec_size()<<std::endl;
 }
 
-void FWMoAn::merge_rects(Rect& one, Rect& two, Rect& new_rect,bool& is_new)
+void FWMoAn::merge_rects(Rect& one, Rect& two, Rect& new_rect,bool& replace_rect)
 {
     Point new_tl;
     Point new_br;
-    is_new = true;
+    replace_rect = false;
     if(one.contains(two.tl()) || one.contains(two.br()) || one.contains(Point(two.tl().x+two.width,two.tl().y)) || one.contains(Point(two.br().x-two.width,two.br().y)))
     {
-        is_new = false;
+        replace_rect = true;
         // calc new tl
         if(one.tl().x<two.tl().x)           // one is more left
         {
@@ -384,7 +409,7 @@ void FWMoAn::merge_rects(Rect& one, Rect& two, Rect& new_rect,bool& is_new)
     }
     else
     {
-        is_new = true;
+        replace_rect = false;
         new_tl = one.tl();
         new_br = one.br();
     }
