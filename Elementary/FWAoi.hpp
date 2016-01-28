@@ -28,7 +28,9 @@ public:
     Point                       get_iCenter();              // Get Center of AOI
     int                         get_iNum_in_Aoivec();
     Rect                        get_iRect();
-    void                        write(int,int);             // Write image to Temp Folder for analysis (1:IGray, 2:iGrad, 3:iDog, 4:iBgr)
+    void                        write(int,int);             // Write image to Temp (1:IGray, 2:iGrad, 3:iDog, 4:iBgr)
+    void                        create_historgram();
+
 private:
     std::string                 iPicname;                   // Number of picture, containing this FWAoi
     int                         iSet_number;                // number of set, to which the picture belongs

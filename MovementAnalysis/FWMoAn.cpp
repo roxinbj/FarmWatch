@@ -13,7 +13,6 @@ typedef std::list<std::string>  ls;
 // Global Variables in FWMoAn
 FWImage* previous;
 FWImage* current;
-vector<Rect> potential_aois;
 Size dim(1920,1080);
 //  ************* public ***********
 
@@ -72,8 +71,8 @@ FWMoAn::FWMoAn(int set_n, int nmax)
     
     for(int it=0;it<iNum_pics;it++)                                     // TODO Parallel
     {
-        FWImage* image = new FWImage(set_n,it,this->iPicname_list.at(it),true);         // create new image and
-//        iImage_vec.insert(iterator,image);
+         FWImage* image = new FWImage(set_n,it,this->iPicname_list.at(it),true);         // create new image and
+        //        iImage_vec.insert(iterator,image);
         iImage_vec.push_back(image);                                // add it to the vector
     }
     
@@ -155,6 +154,7 @@ void FWMoAn::print_picname_list()
 ////    int aoi_vec_size = prev->get_iAoi_vec_size();
 //    return 0;
 //}
+
 
 bool FWMoAn::iAoi_exist_prev(FWAoi* aoi)
 {
@@ -238,6 +238,7 @@ FWAoi* FWMoAn::iAoi_intersects(FWImage* image_in, FWAoi* aoi)
 
 void FWMoAn::calc_dog(int ref,int pic_num)
 {
+    vector<Rect> potential_aois;
     // 1. create DOG
     
     absdiff(previous->iGray,current->iGray,current->iDog);
@@ -269,6 +270,7 @@ void FWMoAn::calc_dog(int ref,int pic_num)
     ss << current->get_iName();
     std::cout << "contours: "<<current->iContours.size()<<", nr: "<< ss.str()<< std::endl;
     int k=0;                                                                                // k = iterator through images
+    potential_aois.clear();
     for(int i=0; i<current->iContours.size();i++)
     {
         if( contourArea(current->iContours.at(i))>min_area)                                    // i = iterator through contours
@@ -305,9 +307,16 @@ void FWMoAn::calc_dog(int ref,int pic_num)
                     merge_rects(rect, *iterator, new_rect,replace_rect);
                     if(replace_rect)                                // found similar rect: replace it and restart while loop
                     {
-                        potential_aois.erase(iterator);
-                        potential_aois.insert(iterator,new_rect);
-                        // possible recursive loop?????
+//                        if(rect == new_rect)            // Same Rect: jump over
+//                        {
+//                            iterator = potential_aois.begin();                              //
+//                            replace_rect = false;
+//                        }
+//                        else
+//                        {
+                            potential_aois.erase(iterator);
+                            potential_aois.insert(iterator,new_rect);
+//                        }
                     }
                     iterator++;
                 }
@@ -316,69 +325,26 @@ void FWMoAn::calc_dog(int ref,int pic_num)
                     potential_aois.push_back(rect);
                 }
             }
-            
-            
-//            for(int j=0; j<size;j++)
-//            {
-//                if(rect_ok)
-//                {   Rect new_rect;
-//                    bool replace_rect;
-//                    merge_rects(rect, potential_aois.at(j),new_rect,replace_rect);            // merges, if rects overlap and returns merged rect
-//                    if(!replace_rect)                         // same already exists, so exchange
-//                    {
-//                        potential_aois.at(j) = new_rect;      // TODo : delete does not work
-//                        rect = new_rect;
-////                        j++;
-//                    }
-//                    else
-//                    {
-//                    potential_aois.push_back(rect);         // add element
-//                    }
-//                }
-//                // TODO
-//            }
-            
-            
-            // Create AOI
-//            FWAoi* aoi = new FWAoi(current,rect.tl(),rect.br());
-//            if(iAoi_exist_prev(aoi))                                            // except: Aoi is Out Movement
-//            {
-//                current->delete_aoi(aoi);
-//            }
-//            else                                                            // merge if rect intersects with existing
-//            {
-//                FWAoi* new_aoi = iAoi_intersects(current, aoi);
-//                if(new_aoi!=aoi)                                            // if new AOI is not aoi
-//                {
-//                    double area = aoi->get_iRect().area();
-//                    current->delete_aoi(aoi);                                  // delete old aoi
-//                    Rect new_rect = new_aoi->get_iRect();
-//                    current->iBoundingRect.push_back(new_rect);
-//                    rectangle( current->iTemp, new_rect.tl(), new_rect.br(), Scalar(255,255,255), 2, 8, 0 );
-//                    current->add_aoi(new_aoi);                                 // Add new aoi
-//                    //                    std::cout << "---new AOI area = " << new_rect.area() << std::endl;
-//                    //                    std::cout << "old area: "<< area <<std::endl;
-//                    //                  new_aoi->write(1,k);
-//                }
-//                else
-//                {
-//                    current->iBoundingRect.push_back(rect);
-//                    rectangle( current->iTemp, rect.tl(), rect.br(), Scalar(255,255,255), 2, 8, 0 );
-//                    current->add_aoi(aoi);                                 // Add new aoi
-//                }
-//            }
-        }
+        } // end of iteration through contoures: potential_aoi now contains only merged rects
         
     }
-    for(int i=0;i<potential_aois.size();i++)
+    //Create AOI for each rect in potential_aoi
+    for(int j=0;j<potential_aois.size();j++)
     {
-        rectangle( current->iGray, potential_aois.at(i).tl(), potential_aois.at(i).br(), Scalar(255,255,10*i), 2, 8, 0 );
-        
+        //Create AOI
+        FWAoi* aoi = new FWAoi(current,potential_aois.at(j).tl(),potential_aois.at(j).br());
+        if(iAoi_exist_prev(aoi))                                            // except: Aoi is Out Movement
+        {
+            current->delete_aoi(aoi);
+        }
+        else                                                            // merge if rect intersects with existing
+        {
+            current->iBoundingRect.push_back(potential_aois.at(j));
+            rectangle( current->iGray, potential_aois.at(j).tl(), potential_aois.at(j).br(), Scalar(255,255,255), 2, 8, 0 );
+            aoi->create_historgram();
+        }// end create Aoi
     }
-    potential_aois.clear();
     current->write(1);
-//    if (current->iBoundingRect.size()>0) current->write(4);                        // only rewrite Image, if at least one bounding box is added
-//    std::cout <<"Number of AOI:"<< current->get_iAoi_vec_size()<<std::endl;
 }
 
 void FWMoAn::merge_rects(Rect& one, Rect& two, Rect& new_rect,bool& replace_rect)
@@ -386,6 +352,14 @@ void FWMoAn::merge_rects(Rect& one, Rect& two, Rect& new_rect,bool& replace_rect
     Point new_tl;
     Point new_br;
     replace_rect = false;
+//    Point dbr = one.br() - two.br();
+//    Point dtl = one.tl() - two.tl();
+//    if(abs(dbr.x)<2 && abs(dbr.y)<2 && abs(dtl.x)<2 && abs(dtl.y)<2)
+//    {
+//        replace_rect = true;
+//        new_br = one.br();
+//        new_tl = one.tl();
+//    }
     if(one.contains(two.tl()) || one.contains(two.br()) || one.contains(Point(two.tl().x+two.width,two.tl().y)) || one.contains(Point(two.br().x-two.width,two.br().y)))
     {
         replace_rect = true;

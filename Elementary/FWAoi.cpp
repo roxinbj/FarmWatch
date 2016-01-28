@@ -47,10 +47,10 @@ FWAoi::FWAoi(FWImage* image, Point tl,Point br) :FWImage(image->get_iSet(),image
     {
         getRectSubPix(image->iDog,s,this->iCenter,this->iDog,-1);
     }
-    if( !image->iTemp.empty())
-    {
-        getRectSubPix(image->iTemp,s,this->iCenter,this->iTemp,-1);
-    }
+//    if( !image->iTemp.empty())
+//    {
+//        getRectSubPix(image->iTemp,s,this->iCenter,this->iTemp,-1);
+//    }
     if (!image->iGrad.empty())
     {
         getRectSubPix(image->iGrad,s,this->iCenter,this->iGrad,-1);
@@ -59,7 +59,6 @@ FWAoi::FWAoi(FWImage* image, Point tl,Point br) :FWImage(image->get_iSet(),image
     {
         getRectSubPix(image->iBgr,s,this->iCenter,this->iBgr,-1);
     }
-    
     int size_of_aoivec = image->get_iAoi_vec_size();
     this->iNum_in_Aoivec = size_of_aoivec;
 
@@ -141,6 +140,37 @@ int FWAoi::get_iNum_in_Aoivec()
 }
 
 // ----------------other Functions--------------------------------
+void FWAoi::create_historgram()
+{
+    // Initialize parameters
+    int histSize = 256;    // bin size
+    float range[] = { 0, 255 };
+    const float *ranges[] = { range };
+    
+    // Calculate histogram
+    MatND hist;
+    calcHist( &this->iGray, 1, 0, Mat(), hist, 1, &histSize, ranges, true, false );
+    
+    // Plot the histogram
+    int hist_w = 512; int hist_h = 400;
+    int bin_w = cvRound( (double) hist_w/histSize );
+    
+    Mat histImage( hist_h, hist_w, CV_8UC1, Scalar( 0,0,0) );
+    normalize(hist, hist, 0, histImage.rows, NORM_MINMAX, -1, Mat() );
+    
+    for( int i = 1; i < histSize; i++ )
+    {
+        line( histImage, Point( bin_w*(i-1), hist_h - cvRound(hist.at<float>(i-1)) ) ,
+             Point( bin_w*(i), hist_h - cvRound(hist.at<float>(i)) ),
+             Scalar( 255, 0, 0), 2, 8, 0  );
+    }
+    std::stringstream ss;
+    ss << "../../bin/Temp/Histograms/" << this->get_iNum_in_Aoivec()<<"-Histogram.png" ;
+    imwrite(ss.str(), histImage);
+    
+
+}
+
 void FWAoi::write(int choice, int num_aoi)
 {
     std::stringstream ss;

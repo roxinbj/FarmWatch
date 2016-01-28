@@ -24,7 +24,7 @@ using namespace std;
 int main(int argc, const char * argv[]) {
                                                                           //Create new MovementAnalysis
 //    FWMoAn::iMin_Area = 30.;                                            // Set Min Movement Area for MoAn
-    FWMoAn eins(3,20);
+    FWMoAn eins(3,10);
     eins.run_MoAn();
     
     
